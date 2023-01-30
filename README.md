@@ -1,2 +1,4 @@
-# DevOps
-Module : DevOps &amp; CI/CD
+# TD1 : Introduction à Docker
+
+Réalisation d'une application avec Flask
+Tout est dockérisé
