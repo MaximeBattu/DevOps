@@ -1,8 +1,8 @@
-name: wf-split
+name: CD
 on:
   #to begin you want to launch this job in main and develop
   workflow_run:
-    workflows: ["wf-main"]
+    workflows: ["CI"]
     types:
      - completed
     branches:
@@ -10,8 +10,7 @@ on:
   pull_request:
 
 jobs:
-
-# define job to build and publish docker image
+  # define job to build and publish docker image
   build-and-push-docker-image:
    # run only when code is compiling and tests are passing
    runs-on: ubuntu-22.04
