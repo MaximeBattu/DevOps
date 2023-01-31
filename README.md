@@ -60,4 +60,73 @@ Il y a deux commandes à utiliser lors de l'utilisation de docker-compose :
 
 ### 1-4 Document your docker-compose file.
 
+```yaml
+version: '3.7'
+
+# Création des services
+services:
+      # Service backend | api
+      backend:
+         # Chemin vers le dockerfile
+         build: /api/
+         # Nom du container : api
+         container_name: api
+         # Réseau associé
+         networks:
+            - app-network
+         # Dépendence du container : database
+         depends_on:
+            - database
+      # Service database
+      database:
+         # Chemin vers le dockerfile
+         build: /data/
+         # Nom du container : database
+         container_name: database
+         # Réseau associé
+         networks:
+            - app-network
+      # Service httpd
+      httpd:
+         # Chemin vers le dockerfile
+         build: /http/
+         # Nom du container : apache
+         container_name: apache
+         # Port exposé
+         ports:
+            - 80:80
+         # Réseau associé
+         networks:
+            - app-network
+         # Dépendence du container : backend
+         depends_on:
+            - backend
+
+# Création du réseau
+networks:
+      app-network:
+         # Configuration par défaut
+         driver: bridge
+```
+
 ### 1-5 Document your publication commands and published images in dockerhub.
+
+Création des tags
+- `docker tag docker-database maximebattu/docker-database:1.0`
+- `docker tag docker-backend maximebattu/docker-api:1.0`
+- `docker tag docker-httpd maximebattu/docker-web:1.0`
+
+Push des images sur docker hub
+- `docker push docker-database:1.0`
+- `docker push docker-api:1.0`
+- `docker push docker-web:1.0`
+
+Images sur le [Docker Hub](https://hub.docker.com/u/maximebattu)
+
+> Tips : Why do we put our images into an online repo ? (à compléter)
+
+Il est important de mettre ses images sur une répertoire en ligne, tel que Docker Hub pour tout simplement pouvoir réutiliser, partager ou récupérer des images fonctionnelles entre différents postes / personnes.
+
+Cela permete également de versionner différentes versions d'une images, avec l'évolution du technologie (passage de pgsql 14 à 15) et d'améliorer les performances d'installation. Ces images sont stockées sur différents serveurs très performants qui faciliteront le téléchargement des différentes images stockées.
+
+Cela peut s'avérer utile, si par exemple j'ai besoin d'une image docker pour une base de données postegres sql. Autant réutilisé une image déjà existante qui est déjà configurée et où le travail sera moindre.
