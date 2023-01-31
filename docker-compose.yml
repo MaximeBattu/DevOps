@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+    backend:
+        build: /api/
+        container_name: api
+        networks:
+          - app-network
+        depends_on:
+          - database
+
+    database:
+        build: /data/
+        container_name: database
+        networks:
+          - app-network
+
+    httpd:
+        build: /http/
+        container_name: apache
+        ports:
+          - 80:80
+        networks:
+          - app-network
+        depends_on:
+          - backend
+
+networks:
+    app-network:
+      driver: bridge
