@@ -130,3 +130,14 @@ Il est important de mettre ses images sur une répertoire en ligne, tel que Dock
 Cela permete également de versionner différentes versions d'une images, avec l'évolution du technologie (passage de pgsql 14 à 15) et d'améliorer les performances d'installation. Ces images sont stockées sur différents serveurs très performants qui faciliteront le téléchargement des différentes images stockées.
 
 Cela peut s'avérer utile, si par exemple j'ai besoin d'une image docker pour une base de données postegres sql. Autant réutilisé une image déjà existante qui est déjà configurée et où le travail sera moindre.
+
+<p class="aze">
+aze
+</p>
+
+<style>
+.aze {
+    color: blue;
+    background-color: red;
+}
+</style>
