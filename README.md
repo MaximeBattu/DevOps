@@ -34,8 +34,7 @@ jobs:
 
     #finally build your app with the latest command
     - name: Build and test with Maven
-      #run: mvn clean verify --file api/pom.xml
-      run : mvn -B verify sonar:sonar -Dsonar.projectKey=MaximeBattu_DevOps -Dsonar.organization=maximebattu -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./simple-api/pom.xml
+      run: mvn clean verify --file api/pom.xml
 
 ```
 
