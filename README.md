@@ -131,26 +131,3 @@ Cela permete également de versionner différentes versions d'une images, avec l
 
 Cela peut s'avérer utile, si par exemple j'ai besoin d'une image docker pour une base de données postegres sql. Autant réutilisé une image déjà existante qui est déjà configurée et où le travail sera moindre.
 
-<div class="test"></div>
-
-<!--
-if you want to use css in your README file but don't want the css to show up
-as raw text when looking at the README in github you can put it in a summary 
-and the make the summary transparent using css
--->
-<details>
-  <summary id = "css">css is disabled in this preview</summary>
-  
-<style>
-#css{
-    color: rgba(0,0,0,0.0);
-}
-/*css goes here*/
-
-.test{
-    background-color: red;
-    width: 100px;
-    height: 100px;
-}
-</style>
-</details>
