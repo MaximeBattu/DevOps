@@ -163,7 +163,7 @@ ___
 > ### Note : What is it supposed to do?
 > En lançant la commande `mvn clean verify`, nous rechargeons et installons toutes les dépendances décrites dans le `pom.xml`. En suite, les tests unitaires s'éxecutent un à un et la commande indique les réussites / échecs.
 
-![](images/result.png)
+![mvn clean verify](images/result.png)
 
 > ### Note : Unit tests ? Component tests ?
 > Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour tester le développement d'une fonctionnalité et pour débugger et en gage de qualité de code.
@@ -175,7 +175,7 @@ ___
 `Testcontainers` est une librairie java utilisée pour réalisé des tests sur une application : notamment des JUnit Tests. Elle permet la création d'une base de données directement lancée depuis un container avec un script donné (`ressources/InsertData.sql`) ce qui permet de simulée parfaitement la communication avec un module de base de données.
 
 Voici toutes les dépendances utilisées pour la librairie `testcontainers` listées dans le `pom.xml`
-![](images/20230201084122.png)
+![dépendances pour faire des TUs](images/20230201084122.png)
 
 ## 2-2 Document your Github Actions configurations.
 
@@ -225,11 +225,11 @@ jobs:
 
 ## Document your quality gate configuration.
 
-![](images/sonar.png)
+![sonar](images/sonar.png)
 
 Notre sonar est configuré par défaut et il a des attentes très spécifiques sur les 6 analyses :
 
-![](images/20230201104243.png)
+![quality gate configuration](images/20230201104243.png)
 
 Bien sur cette configuration est celle présente par défaut et est donc contestable sur certains points, cela dépendra de notre applicatif et de ce que nous voulons réalisé avec (Autorisation des CORS ...)
 
