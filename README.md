@@ -70,9 +70,18 @@ ENTRYPOINT java -jar myapp.jar
 
 ## 1-3 Document docker-compose most important commands.
 
-Il y a deux commandes à utiliser lors de l'utilisation de docker-compose :
+Il y a plusieurs commandes importantes à utiliser lors de l'utilisation de docker-compose :
+
+> Pour le lancement d'un docker compose :
+
 - `docker compose build` : Permet de construire les images à à partir d'un fichier `docker-compose.yml` qui donne les emplacement de chaque Dockerfile pour chacun des services (API/DB/Web)
 - `docker compose up` : Permet de lancer les services définis dans le fichier `docker-compose.yml` et de les lier entre eux. Il est possible de lancer les services en arrière plan avec l'option `-d`
+
+> Autres commandes utiles
+
+- `docker compose down` : Arrête et supprime tous les containers et volumes crées pour les services
+- `docker compose ps` : Affiche l'état des services en cours
+- `docker compose logs` : Affiche les logs du services
 
 ## 1-4 Document your docker-compose file.
 
@@ -160,7 +169,6 @@ ___
 > Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour tester le développement d'une fonctionnalité et pour débugger et en gage de qualité de code.
 >
 >Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisé dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
-
 
 ## 2-1 What are testcontainers ?
 
