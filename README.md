@@ -13,12 +13,10 @@ COPY dumps/ /docker-entrypoint-initdb.d/
 ```
 
 > ### Tips : Why should we run the container with a flag -e to give the environment variables?
-
-Pour éviter de stocker les variables d'environnement dans l'image. Cela permet de ne pas les rendre publiques et de les rendre plus facilement modifiables.
+>Pour éviter de stocker les variables d'environnement dans l'image. Cela permet de ne pas les rendre publiques et de les rendre plus facilement modifiables.
 
 > ### Tips : Why do we need a volume to be attached to our postgres container?
-
-Pour écrire dans une zone de stockage les données de la BDD. Cela permet de ne pas perdre les données en cas de redémarrage du container.
+>Pour écrire dans une zone de stockage les données de la BDD. Cela permet de ne pas perdre les données en cas de redémarrage du container.
 
 ## 1-1 Document your database container essentials: commands and Dockerfile.
 
@@ -63,8 +61,7 @@ ENTRYPOINT java -jar myapp.jar
 ```
 
 > ### Tips : Why is docker-compose so important ?
-
-Il permet de définir les services à lancer et de les lier entre eux. Il est possible de définir des dépendances entre les services et de les lancer dans un ordre précis. Il est également possible de définir des variables d'environnement pour chaque service.
+>Il permet de définir les services à lancer et de les lier entre eux. Il est possible de définir des dépendances entre les services et de les lancer dans un ordre précis. Il est également possible de définir des variables d'environnement pour chaque service.
 
 ## 1-3 Document docker-compose most important commands.
 
