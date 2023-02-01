@@ -321,3 +321,146 @@ jobs:
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 ```
+
+___
+
+# TP3  : Ansible
+
+## Front
+
+Nous avons rajouter un service dans le `docker-compose.yml`
+
+```yml
+version: '3.7'
+
+services:
+    api:
+        build: /api/
+        container_name: api
+        ports:
+          - 8081:8080
+        networks:
+          - app-network
+        depends_on:
+          - database
+
+    database:
+        build: /data/
+        container_name: database
+        networks:
+          - app-network
+
+    httpd:
+        build: /http/
+        container_name: apache
+        ports:
+          - 82:80
+        networks:
+          - app-network
+        depends_on:
+          - api
+    
+    front:
+        build: /front/
+        container_name: vue
+        ports:
+          - 80:80
+        networks:
+          - app-network
+        depends_on:
+          - httpd
+
+networks:
+    app-network:
+      driver: bridge
+```
+
+Le nouveau service est `front` il dépend du bon lancement du service `httpd` et son lancement se fait sur le port 80.
+Derière ce service nous avons une application Vue faisant des appels API vers le backend pour charger les données à afficher
+
+>Voici quelques exemples du résultat obtenu
+![](images/20230201171145.png)
+![](images/20230201171207.png)
+
+___
+
+# TP Extra
+
+> ### Objectif
+> Mettre en place un loadbalancer sur les containers en place. Le but est de rajouter un nouveau container de "back" pour fluidifier le traffic entrant et ainsi le repartir équitablement vers les x containers à disposition
+
+Pour mettre en place cette solution il faut modifier la configuration `httpd.conf`
+
+```
+<VirtualHost *:80>
+    <Proxy balancer://my-java-api>
+        BalancerMember "http://api1:8080"
+        BalancerMember "http://api2:8080"
+    </Proxy>
+
+    ProxyPreserveHost On
+
+    ProxyPass "/" "balancer://my-java-api/"
+    ProxyPassReverse "/" "balancer://my-java-api/"
+</VirtualHost>
+```
+
+Ici nous créons un nouveau `<Proxy balancer></Proxy>` avec x elements qui représente nos différent containers.
+
+Nous devons aussi compléter le `docker-compose.yml`
+
+```yml
+version: '3.7'
+
+services:
+    backend-blue:
+        build: /api/
+        container_name: api1
+        ports:
+          - 8081:8080
+        networks:
+          - app-network
+        depends_on:
+          - database
+
+    backend-green:
+        build: /api/
+        container_name: api2
+        ports:
+          - 8082:8080
+        networks:
+          - app-network
+        depends_on:
+          - database
+
+    database:
+        build: /data/
+        container_name: database
+        networks:
+          - app-network
+
+    httpd:
+        build: /http/
+        container_name: apache
+        ports:
+          - 82:80
+        networks:
+          - app-network
+        depends_on:
+          - backend-blue
+          - backend-green
+    
+    front:
+        build: /front/
+        container_name: vue
+        ports:
+          - 80:80
+        networks:
+          - app-network
+        depends_on:
+          - httpd
+
+networks:
+    app-network:
+      driver: bridge
+```
