@@ -1,3 +1,9 @@
+# Auteurs
+
+Maxime BATTU
+
+Batiste LALOI
+
 # TP1 : Découverte de docker
 
 ## Mise en place de la base de données pgsql
@@ -152,8 +158,8 @@ ___
 
 > ### Note : Unit tests ? Component tests ?
 > Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour tester le développement d'une fonctionnalité et pour débugger et en gage de qualité de code.
-
-Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisé dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
+>
+>Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisé dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
 
 
 ## 2-1 What are testcontainers ?
