@@ -1,9 +1,21 @@
 version: '3.7'
 
 services:
-    backend:
+    backend-blue:
         build: /api/
-        container_name: api
+        container_name: api1
+        ports:
+          - 8081:8080
+        networks:
+          - app-network
+        depends_on:
+          - database
+
+    backend-green:
+        build: /api/
+        container_name: api2
+        ports:
+          - 8082:8080
         networks:
           - app-network
         depends_on:
@@ -19,11 +31,22 @@ services:
         build: /http/
         container_name: apache
         ports:
+          - 82:80
+        networks:
+          - app-network
+        depends_on:
+          - backend-blue
+          - backend-green
+    
+    front:
+        build: /front/
+        container_name: vue
+        ports:
           - 80:80
         networks:
           - app-network
         depends_on:
-          - backend
+          - httpd
 
 networks:
     app-network:
