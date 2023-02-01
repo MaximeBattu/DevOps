@@ -20,10 +20,9 @@ COPY dumps/ /docker-entrypoint-initdb.d/
 
 ## 1-1 Document your database container essentials: commands and Dockerfile.
 
-Network : `docker network create app-network <br>`
+Network : `docker network create app-network`<br>
 Admnier : `docker run -p 8090:8080 --net=app-network --name=adminer -d adminer` <br>
-Lancement du postgres : `docker run -P --name [Nom de ton app] -d --net=app-network [USERNAME]/[Nom de ton app]`
-
+Lancement du postgres : `docker run -P --name [Nom de ton app] -d --net=app-network [USERNAME]/[Nom de ton app]`<br>
 Persistance des données : `docker run -P --name [Nom de ton app] -d --net=app-network -v /my/own/datadir:/var/lib/postgresql/data [USERNAME]/[Nom de ton app]`
 
 > ### Tips : Why do we need a reverse proxy ?
@@ -72,52 +71,53 @@ Il y a deux commandes à utiliser lors de l'utilisation de docker-compose :
 ## 1-4 Document your docker-compose file.
 
 ```yaml
-version: '3.7'
+version: "3.7"
 
 # Création des services
 services:
-      # Service backend | api
-      backend:
-         # Chemin vers le dockerfile
-         build: /api/
-         # Nom du container : api
-         container_name: api
-         # Réseau associé
-         networks:
-            - app-network
-         # Dépendence du container : database
-         depends_on:
-            - database
-      # Service database
-      database:
-         # Chemin vers le dockerfile
-         build: /data/
-         # Nom du container : database
-         container_name: database
-         # Réseau associé
-         networks:
-            - app-network
-      # Service httpd
-      httpd:
-         # Chemin vers le dockerfile
-         build: /http/
-         # Nom du container : apache
-         container_name: apache
-         # Port exposé
-         ports:
-            - 80:80
-         # Réseau associé
-         networks:
-            - app-network
-         # Dépendence du container : backend
-         depends_on:
-            - backend
+  # Service backend | api
+  backend:
+    # Chemin vers le dockerfile
+    build: /api/
+    # Nom du container : api
+    container_name: api
+    # Réseau associé
+    networks:
+      - app-network
+    # Dépendence du container : database
+    depends_on:
+      - database
+  # Service database
+  database:
+    # Chemin vers le dockerfile
+    build: /data/
+    # Nom du container : database
+    container_name: database
+    # Réseau associé
+    networks:
+      - app-network
+  # Service httpd
+  httpd:
+    # Chemin vers le dockerfile
+    build: /http/
+    # Nom du container : apache
+    container_name: apache
+    # Port exposé
+    ports:
+      - 80:80
+    # Réseau associé
+    networks:
+      - app-network
+    # Dépendence du container : backend
+    depends_on:
+      - backend
 
 # Création du réseau
 networks:
-      app-network:
-         # Configuration par défaut
-         driver: bridge
+  app-network:
+    # Configuration par défaut
+    driver: bridge
+
 ```
 
 ## 1-5 Document your publication commands and published images in dockerhub.
@@ -172,28 +172,27 @@ on:
   #to begin you want to launch this job in main and develop
   push:
     branches:
-     - TP2
+      - TP2
   pull_request:
 
 jobs:
-  test-backend: 
-   runs-on: ubuntu-22.04
-   steps:
-    #checkout your github code using actions/checkout@v2.5.0
-    - uses: actions/checkout@v2.5.0
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      #checkout your github code using actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
 
-    #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: 17
-        distribution: corretto
+      #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: corretto
 
-    #finally build your app with the latest command
-    - name: Build and test with Maven
-      # Localisation du pom.xml
-      run: mvn clean verify --file api/pom.xml
-
+      #finally build your app with the latest command
+      - name: Build and test with Maven
+        # Localisation du pom.xml
+        run: mvn clean verify --file api/pom.xml
 ```
 
 ## 2eme version (2jobs / 2wf)
@@ -204,28 +203,28 @@ on:
   #to begin you want to launch this job in main and develop
   push:
     branches:
-     - TP2
-     - main
+      - TP2
+      - main
   pull_request:
 
 jobs:
-  test-backend: 
-   runs-on: ubuntu-22.04
-   steps:
-    #checkout your github code using actions/checkout@v2.5.0
-    - uses: actions/checkout@v2.5.0
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      #checkout your github code using actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
 
-    #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: 17
-        distribution: corretto
+      #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: corretto
 
-    #finally build your app with the latest command
-    - name: Build and test with Maven
-      #run: mvn clean verify --file api/pom.xml
-      run : mvn -B verify sonar:sonar -Dsonar.projectKey=MaximeBattu_DevOps -Dsonar.organization=maximebattu -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./api/pom.xml
+      #finally build your app with the latest command
+      - name: Build and test with Maven
+        #run: mvn clean verify --file api/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=MaximeBattu_DevOps -Dsonar.organization=maximebattu -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./api/pom.xml
 ```
 
 ```yaml
@@ -234,56 +233,56 @@ on:
   #to begin you want to launch this job in main and develop
   workflow_run:
     workflows:
-     - CI
+      - CI
     types:
-     - completed
+      - completed
     branches:
-     - main
+      - main
   pull_request:
 
 jobs:
   # define job to build and publish docker image
   build-and-push-docker-image:
-   # run only when code is compiling and tests are passing
-   runs-on: ubuntu-22.04
+    # run only when code is compiling and tests are passing
+    runs-on: ubuntu-22.04
 
-   # steps to perform in job
-   steps:
-    - name: Checkout code
-      uses: actions/checkout@v2.5.0
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
 
-    - name: Login to DockerHub
-      run: docker login -u ${{ secrets.DOCKERHUB_USR }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USR }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build image and push backend
-      uses: docker/build-push-action@v3
-      with:
-        # relative path to the place where source code with Dockerfile is located
-        context: ./api/
-        # Note: tags has to be all lower-case
-        tags:  ${{secrets.DOCKERHUB_USR}}/docker-api:latest
-        # build on feature branches, push only on main branch
-        push: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./api/
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USR}}/docker-api:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
 
-    - name: Build image and push database
-      uses: docker/build-push-action@v3
-      with:
-        # relative path to the place where source code with Dockerfile is located
-        context: ./data/
-        # Note: tags has to be all lower-case
-        tags:  ${{secrets.DOCKERHUB_USR}}/docker-database:latest
-        # build on feature branches, push only on main branch
-        push: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build image and push database
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./data/
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USR}}/docker-database:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
 
-    - name: Build image and push httpd
-      uses: docker/build-push-action@v3
-      with:
-        # relative path to the place where source code with Dockerfile is located
-        context: ./http/
-        # Note: tags has to be all lower-case
-        tags:  ${{secrets.DOCKERHUB_USR}}/docker-web:latest
-        # build on feature branches, push only on main branch
-        push: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./http/
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USR}}/docker-web:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
 ```
 
 > ### Note : Secured Variables, why ?
