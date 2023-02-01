@@ -20,7 +20,7 @@ Pour éviter de stocker les variables d'environnement dans l'image. Cela permet 
 
 Pour écrire dans une zone de stockage les données de la BDD. Cela permet de ne pas perdre les données en cas de redémarrage du container.
 
-### 1-1 Document your database container essentials: commands and Dockerfile.
+## 1-1 Document your database container essentials: commands and Dockerfile.
 
 Network : `docker network create app-network <br>`
 Admnier : `docker run -p 8090:8080 --net=app-network --name=adminer -d adminer` <br>
@@ -32,7 +32,7 @@ Persistance des données : `docker run -P --name [Nom de ton app] -d --net=app-n
 
 Pour pouvoir faire du load balancing et de la répartition de charge. Cela permet de faire tourner plusieurs instances d'une même application et de les répartir entre elles.
 
-### 1-2 Why do we need a multistage build? And explain each step of this dockerfile
+## 1-2 Why do we need a multistage build? And explain each step of this dockerfile
 
 Le multistage build permet de séparer les différentes étapes de la construction de l'image. Cela permet de ne pas avoir à installer des dépendances inutiles dans l'image finale. Par exemple, dans le cas d'un projet Java, on peut installer Maven dans l'image de build, puis copier le jar compilé dans l'image finale qui n'aura besoin que de Java pour fonctionner.
 
@@ -67,13 +67,13 @@ ENTRYPOINT java -jar myapp.jar
 
 Il permet de définir les services à lancer et de les lier entre eux. Il est possible de définir des dépendances entre les services et de les lancer dans un ordre précis. Il est également possible de définir des variables d'environnement pour chaque service.
 
-### 1-3 Document docker-compose most important commands.
+## 1-3 Document docker-compose most important commands.
 
 Il y a deux commandes à utiliser lors de l'utilisation de docker-compose :
 - `docker compose build` : Permet de construire les images à à partir d'un fichier `docker-compose.yml` qui donne les emplacement de chaque Dockerfile pour chacun des services (API/DB/Web)
 - `docker compose up` : Permet de lancer les services définis dans le fichier `docker-compose.yml` et de les lier entre eux. Il est possible de lancer les services en arrière plan avec l'option `-d`
 
-### 1-4 Document your docker-compose file.
+## 1-4 Document your docker-compose file.
 
 ```yaml
 version: '3.7'
@@ -124,7 +124,7 @@ networks:
          driver: bridge
 ```
 
-### 1-5 Document your publication commands and published images in dockerhub.
+## 1-5 Document your publication commands and published images in dockerhub.
 
 Création des tags
 - `docker tag docker-database maximebattu/docker-database:1.0`
@@ -170,7 +170,7 @@ Voici toutes les dépendances utilisées pour la librairie `testcontainers` list
 
 ## 2-2 Document your Github Actions configurations.
 
-### Premiere version (1 job)
+## Premiere version (1 job)
 ```yml
 name: CI devops 2023
 on:
@@ -201,7 +201,7 @@ jobs:
 
 ```
 
-### 2eme version (2jobs / 2wf)
+## 2eme version (2jobs / 2wf)
 
 ```yaml
 name: CI
