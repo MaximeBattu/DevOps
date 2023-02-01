@@ -12,11 +12,11 @@ ENV POSTGRES_DB=db \
 COPY dumps/ /docker-entrypoint-initdb.d/
 ```
 
-> Tips : Why should we run the container with a flag -e to give the environment variables?
+> ### Tips : Why should we run the container with a flag -e to give the environment variables?
 
 Pour éviter de stocker les variables d'environnement dans l'image. Cela permet de ne pas les rendre publiques et de les rendre plus facilement modifiables.
 
-> Tips : Why do we need a volume to be attached to our postgres container?
+> ### Tips : Why do we need a volume to be attached to our postgres container?
 
 Pour écrire dans une zone de stockage les données de la BDD. Cela permet de ne pas perdre les données en cas de redémarrage du container.
 
@@ -28,9 +28,8 @@ Lancement du postgres : `docker run -P --name [Nom de ton app] -d --net=app-netw
 
 Persistance des données : `docker run -P --name [Nom de ton app] -d --net=app-network -v /my/own/datadir:/var/lib/postgresql/data [USERNAME]/[Nom de ton app]`
 
-> Tips : Why do we need a reverse proxy ?
-
-Pour pouvoir faire du load balancing et de la répartition de charge. Cela permet de faire tourner plusieurs instances d'une même application et de les répartir entre elles.
+> ### Tips : Why do we need a reverse proxy ?
+> Pour pouvoir faire du load balancing et de la répartition de charge. Cela permet de faire tourner plusieurs instances d'une même application et de les répartir entre elles.
 
 ## 1-2 Why do we need a multistage build? And explain each step of this dockerfile
 
@@ -63,7 +62,7 @@ COPY --from=myapp-build $MYAPP_HOME/target/*.jar $MYAPP_HOME/myapp.jar
 ENTRYPOINT java -jar myapp.jar
 ```
 
-> Tips : Why is docker-compose so important ?
+> ### Tips : Why is docker-compose so important ?
 
 Il permet de définir les services à lancer et de les lier entre eux. Il est possible de définir des dépendances entre les services et de les lancer dans un ordre précis. Il est également possible de définir des variables d'environnement pour chaque service.
 
@@ -138,25 +137,24 @@ Push des images sur docker hub
 
 Images sur le [Docker Hub](https://hub.docker.com/u/maximebattu)
 
-> Tips : Why do we put our images into an online repo ? (à compléter)
+> ### Tips : Why do we put our images into an online repo ? (à compléter)
+> Il est important de mettre ses images sur une répertoire en ligne, tel que Docker Hub pour tout simplement pouvoir réutiliser, partager ou récupérer des images fonctionnelles entre différents postes / personnes.
+>
+>Cela permete également de versionner différentes versions d'une images, avec l'évolution du technologie (passage de pgsql 14 à 15) et d'améliorer les performances d'installation. Ces images sont stockées sur différents serveurs très performants qui faciliteront le téléchargement des différentes images stockées.
+>
+> Cela peut s'avérer utile, si par exemple j'ai besoin d'une image docker pour une base de données postegres sql. Autant réutilisé une image déjà existante qui est déjà configurée et où le travail sera moindre.
 
-Il est important de mettre ses images sur une répertoire en ligne, tel que Docker Hub pour tout simplement pouvoir réutiliser, partager ou récupérer des images fonctionnelles entre différents postes / personnes.
-
-Cela permete également de versionner différentes versions d'une images, avec l'évolution du technologie (passage de pgsql 14 à 15) et d'améliorer les performances d'installation. Ces images sont stockées sur différents serveurs très performants qui faciliteront le téléchargement des différentes images stockées.
-
-Cela peut s'avérer utile, si par exemple j'ai besoin d'une image docker pour une base de données postegres sql. Autant réutilisé une image déjà existante qui est déjà configurée et où le travail sera moindre.
+___
 
 # TP2 : Découverte Github Actions
 
-> Note : What is it supposed to do?
-
-En lançant la commande `mvn clean verify`, nous rechargeons et installons toutes les dépendances décrites dans le `pom.xml`. En suite, les tests unitaires s'éxecutent un à un et la commande indique les réussites / échecs.
+> ### Note : What is it supposed to do?
+> En lançant la commande `mvn clean verify`, nous rechargeons et installons toutes les dépendances décrites dans le `pom.xml`. En suite, les tests unitaires s'éxecutent un à un et la commande indique les réussites / échecs.
 
 ![](images/result.png)
 
-> Note : Unit tests? Component tests?
-
-Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour tester le développement d'une fonctionnalité et pour débugger et en gage de qualité de code.
+> ### Note : Unit tests ? Component tests ?
+> Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour tester le développement d'une fonctionnalité et pour débugger et en gage de qualité de code.
 
 Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisé dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
 
@@ -291,24 +289,22 @@ jobs:
         push: ${{ github.ref == 'refs/heads/main' }}
 ```
 
-> Note : Secured Variables, why ?
+> ### Note : Secured Variables, why ?
+> Pour ne pas perde ses identifiants et les avoir stockées à un seul endroit, ici Github, qui est sécurisé. De plus utiliser ces variables permettent le déploiement continu sans inclure des données sensibles (identifiant, mot de passe, token).
 
-Pour ne pas perde ses identifiants et les avoir stockées à un seul endroit, ici Github, qui est sécurisé. De plus utiliser ces variables permettent le déploiement continu sans inclure des données sensibles (identifiant, mot de passe, token).
+> ### Note : Why did we put needs: build-and-test-backend on this job? Maybe try without this and you will see !
+> Sans ce job les tests unitaires décrit dans l'application ne s'executeront pas. Donc les pipelines perderaient de leurs sens car elles n'executeraient aucun tests.
 
-> Note : Why did we put needs: build-and-test-backend on this job? Maybe try without this and you will see !
-
-Sans ce job les tests unitaires décrit dans l'application ne s'executeront pas. Donc les pipelines perderaient de leurs sens car elles n'executeraient aucun tests.
-
-> Note : For what purpose do we need to push docker images ?
-
-Pour plusieurs raisons :
-- Partage d'images
-- Versionnement
-- Automatisation de déploiement
-- Accessibilité
-- Gestion de la taille
+> ### Note : For what purpose do we need to push docker images ?
+> Pour plusieurs raisons :
+>- Partage d'images
+>- Versionnement
+>- Automatisation de déploiement
+>- Accessibilité
+>- Gestion de la taille
 
 
 ## Document your quality gate configuration.
 
-> Tip : You can use on: workflow_run to trigger a workflow when another workflow is passed.
+> ### Tips : You can use on: workflow_run to trigger a workflow when another workflow is passed.
+> coucou
