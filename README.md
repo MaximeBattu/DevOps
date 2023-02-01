@@ -165,7 +165,6 @@ Voici toutes les dépendances utilisées pour la librairie `testcontainers` list
 
 ## 2-2 Document your Github Actions configurations.
 
-## Premiere version (1 job)
 ```yml
 name: CI devops 2023
 on:
@@ -195,8 +194,32 @@ jobs:
         run: mvn clean verify --file api/pom.xml
 ```
 
-## 2eme version (2jobs / 2wf)
+> ### Note : Secured Variables, why ?
+> Pour ne pas perde ses identifiants et les avoir stockées à un seul endroit, ici Github, qui est sécurisé. De plus utiliser ces variables permettent le déploiement continu sans inclure des données sensibles (identifiant, mot de passe, token).
 
+> ### Note : Why did we put needs: build-and-test-backend on this job? Maybe try without this and you will see !
+> Sans ce job les tests unitaires décrit dans l'application ne s'executeront pas. Donc les pipelines perderaient de leurs sens car elles n'executeraient aucun tests.
+
+> ### Note : For what purpose do we need to push docker images ?
+> Pour plusieurs raisons :
+>- Partage d'images
+>- Versionnement
+>- Automatisation de déploiement
+>- Accessibilité
+>- Gestion de la taille
+
+
+## Document your quality gate configuration.
+
+![](images/sonar.png)
+
+Notre sonar est configuré par défaut et il a des attentes très spécifiques sur les 6 analyses :
+
+![](images/20230201104243.png)
+
+Bien sur cette configuration est celle présente par défaut et est donc contestable sur certains points, cela dépendra de notre applicatif et de ce que nous voulons réalisé avec (Autorisation des CORS ...)
+
+> ### Tips : You can use on: workflow_run to trigger a workflow when another workflow is passed.
 ```yaml
 name: CI
 on:
@@ -284,23 +307,3 @@ jobs:
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 ```
-
-> ### Note : Secured Variables, why ?
-> Pour ne pas perde ses identifiants et les avoir stockées à un seul endroit, ici Github, qui est sécurisé. De plus utiliser ces variables permettent le déploiement continu sans inclure des données sensibles (identifiant, mot de passe, token).
-
-> ### Note : Why did we put needs: build-and-test-backend on this job? Maybe try without this and you will see !
-> Sans ce job les tests unitaires décrit dans l'application ne s'executeront pas. Donc les pipelines perderaient de leurs sens car elles n'executeraient aucun tests.
-
-> ### Note : For what purpose do we need to push docker images ?
-> Pour plusieurs raisons :
->- Partage d'images
->- Versionnement
->- Automatisation de déploiement
->- Accessibilité
->- Gestion de la taille
-
-
-## Document your quality gate configuration.
-
-> ### Tips : You can use on: workflow_run to trigger a workflow when another workflow is passed.
-> coucou
