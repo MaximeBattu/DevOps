@@ -1,0 +1,10 @@
+---
+# tasks file for roles/proxy
+- name: Run HTTPD
+  docker_container:
+    name: apache
+    image: maximebattu/docker-web
+    ports:
+    - 80:80
+    networks:
+    - name: app-network
