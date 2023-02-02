@@ -1,8 +1,14 @@
 # Auteurs
 
-Maxime BATTU
+## [Maxime BATTU](https://github.com/MaximeBattu)
 
-Batiste LALOI
+## [Batiste LALOI](https://github.com/B4tiste)
+
+<br>
+
+---
+
+<br>
 
 # TP1 : Découverte de docker
 
@@ -74,14 +80,14 @@ Il y a plusieurs commandes importantes à utiliser lors de l'utilisation de dock
 
 > Pour le lancement d'un docker compose :
 
-- `docker compose build` : Permet de construire les images à à partir d'un fichier `docker-compose.yml` qui donne les emplacement de chaque Dockerfile pour chacun des services (API/DB/Web)
-- `docker compose up` : Permet de lancer les services définis dans le fichier `docker-compose.yml` et de les lier entre eux. Il est possible de lancer les services en arrière plan avec l'option `-d`
+- `docker compose build` : Permet de construire les images à à partir d'un fichier `docker-compose.yml` qui donne les emplacement de chaque Dockerfile pour chacun des services (API/DB/Web).
+- `docker compose up` : Permet de lancer les services définis dans le fichier `docker-compose.yml` et de les lier entre eux. Il est possible de lancer les services en arrière plan avec l'option `-d`.
 
 > Autres commandes utiles
 
-- `docker compose down` : Arrête et supprime tous les containers et volumes crées pour les services
-- `docker compose ps` : Affiche l'état des services en cours
-- `docker compose logs` : Affiche les logs du services
+- `docker compose down` : Arrête et supprime tous les containers et volumes crées pour les services.
+- `docker compose ps` : Affiche l'état des services en cours.
+- `docker compose logs` : Affiche les logs du services.
 
 ## 1-4 Document your docker-compose file.
 
@@ -149,32 +155,38 @@ Push des images sur docker hub
 
 Images sur le [Docker Hub](https://hub.docker.com/u/maximebattu)
 
-> ### Tips : Why do we put our images into an online repo ? (à compléter)
+> ### Tips : Why do we put our images into an online repo ?
 > Il est important de mettre ses images sur une répertoire en ligne, tel que Docker Hub pour tout simplement pouvoir réutiliser, partager ou récupérer des images fonctionnelles entre différents postes / personnes.
 >
 >Cela permete également de versionner différentes versions d'une images, avec l'évolution du technologie (passage de pgsql 14 à 15) et d'améliorer les performances d'installation. Ces images sont stockées sur différents serveurs très performants qui faciliteront le téléchargement des différentes images stockées.
 >
 > Cela peut s'avérer utile, si par exemple j'ai besoin d'une image docker pour une base de données postegres sql. Autant réutilisé une image déjà existante qui est déjà configurée et où le travail sera moindre.
 
-___
+<br>
+
+---
+
+<br>
 
 # TP2 : Découverte Github Actions
 
 > ### Note : What is it supposed to do?
 > En lançant la commande `mvn clean verify`, nous rechargeons et installons toutes les dépendances décrites dans le `pom.xml`. En suite, les tests unitaires s'éxecutent un à un et la commande indique les réussites / échecs.
-
 ![mvn clean verify](images/result.png)
 
 > ### Note : Unit tests ? Component tests ?
-> Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour tester le développement d'une fonctionnalité et pour débugger et en gage de qualité de code.
+> Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour valider le bon comportement d'une développement. Leur utilité peut aussi s'étendre au débuggage de code.
 >
->Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisé dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
+>Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisés dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
 
 ## 2-1 What are testcontainers ?
 
 `Testcontainers` est une librairie java utilisée pour réalisé des tests sur une application : notamment des JUnit Tests. Elle permet la création d'une base de données directement lancée depuis un container avec un script donné (`ressources/InsertData.sql`) ce qui permet de simulée parfaitement la communication avec un module de base de données.
 
+[Documentation Testcontainers](https://www.testcontainers.org/)
+
 Voici toutes les dépendances utilisées pour la librairie `testcontainers` listées dans le `pom.xml`
+
 ![dépendances pour faire des TUs](images/20230201084122.png)
 
 ## 2-2 Document your Github Actions configurations.
@@ -322,7 +334,11 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
 ```
 
-___
+<br>
+
+---
+
+<br>
 
 # TP3  : Ansible
 
@@ -341,7 +357,6 @@ Pour unifier le document, nous préferons décrire des rôles pour chaque "couch
 - un rôle de création du network
 - un rôle de création et de mise en place de la base de données
 - un rôle de création et de mise en place des api
-- un rôle de création et de mise en place du serveur apache
 - un rôle de création et de mise en place du proxy pour le load balancing
 
 > PLaylook
@@ -518,7 +533,11 @@ Derière ce service nous avons une application Vue faisant des appels API vers l
 ![](images/20230201171145.png)
 ![](images/20230201171207.png)
 
-___
+<br>
+
+---
+
+<br>
 
 # TP Extra
 
