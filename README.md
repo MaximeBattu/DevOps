@@ -1,8 +1,8 @@
 # Auteurs
 
-## [Maxime BATTU](https://github.com/MaximeBattu)
+### [Maxime BATTU](https://github.com/MaximeBattu)
 
-## [Batiste LALOI](https://github.com/B4tiste)
+### [Batiste LALOI](https://github.com/B4tiste)
 
 <br>
 
