@@ -326,6 +326,142 @@ ___
 
 # TP3  : Ansible
 
+## 3-1 Document your inventory and base commands
+
+- `ansible all -i ansilbe/inventories/setup.yml -m ping`
+
+- `ansible all -i ansible/inventories/setup.yml -m setup -a "filter=ansible_distribution*"`
+
+- `ansible all -i ansible/inventories/setup.yml -m yum -a "name=httpd state=absent" --become`
+
+## 3-2 Document your playbook
+
+Pour unifier le document, nous préferons décrire des rôles pour chaque "couche" donc :
+- un rôle de création et d'installation du document
+- un rôle de création du network
+- un rôle de création et de mise en place de la base de données
+- un rôle de création et de mise en place des api
+- un rôle de création et de mise en place du serveur apache
+- un rôle de création et de mise en place du proxy pour le load balancing
+
+> PLaylook
+```yml
+- hosts: all
+  gather_facts: false
+  become: yes
+
+  roles:
+  - docker
+  - network
+  - database
+  - app
+  - proxy
+```
+
+## Document your docker_container tasks configuration.
+
+
+> Docker
+```yml
+# tasks file for roles/docker
+# Install Docker
+- name: Clean packages
+  command:
+    cmd: dnf clean -y packages
+
+- name: Install device-mapper-persistent-data
+  dnf:
+    name: device-mapper-persistent-data
+    state: latest
+
+- name: Install lvm2
+  dnf:
+    name: lvm2
+    state: latest
+
+- name: add repo docker
+  command:
+    cmd: sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install Docker
+  dnf:
+    name: docker-ce
+    state: present
+
+- name: install python3
+  dnf:
+    name: python3
+
+- name: Pip install
+  pip:
+    name: docker
+
+- name: Make sure Docker is running
+  service: name=docker state=started
+  tags: docker
+```
+> Network
+```yml
+---
+# tasks file for roles/network
+- name: Create app-network
+  docker_network:
+    name: app-network
+    state: present
+```
+> Database
+```yml
+---
+# tasks file for roles/database
+- name: Run Database
+  docker_container:
+    name: database
+    image: maximebattu/docker-database
+    env:
+      POSTGRES_DB: db
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+    networks:
+    - name: app-network
+```
+
+> App
+```yml
+---
+# tasks file for roles/app
+- name: Run API 1
+  docker_container:
+    name: api1
+    image: maximebattu/docker-api
+    networks:
+    - name: app-network
+    ports:
+      - 8081:8080
+  
+- name: Run API 2
+  docker_container:
+    name: api2
+    image: maximebattu/docker-api
+    networks:
+    - name: app-network
+    ports:
+      - 8082:8080
+```
+
+> Proxy
+```yml
+---
+# tasks file for roles/proxy
+- name: Run HTTPD
+  docker_container:
+    name: apache
+    image: maximebattu/docker-web
+    ports:
+    - 80:80
+    networks:
+    - name: app-network
+```
+
 ## Front
 
 Nous avons rajouter un service dans le `docker-compose.yml`
