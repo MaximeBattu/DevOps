@@ -171,17 +171,17 @@ Images sur le [Docker Hub](https://hub.docker.com/u/maximebattu)
 # TP2 : Découverte Github Actions
 
 > ### Note : What is it supposed to do?
-> En lançant la commande `mvn clean verify`, nous rechargeons et installons toutes les dépendances décrites dans le `pom.xml`. En suite, les tests unitaires s'éxecutent un à un et la commande indique les réussites / échecs.
+> En lançant la commande `mvn clean verify`, nous rechargeons et installons toutes les dépendances décrites dans le `pom.xml`. Ensuite, les tests unitaires s'éxecutent un à un et la commande indique les réussites / échecs.
 ![mvn clean verify](images/result.png)
 
 > ### Note : Unit tests ? Component tests ?
-> Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisé pour valider le bon comportement d'une développement. Leur utilité peut aussi s'étendre au débuggage de code.
+> Les Tests Unitaires sont des tests qui visent à vérifier le comportement d'une méthode ou d'une fonction. Ils sont généralement réalisés pour valider le bon comportement d'une développement. Leur utilité peut aussi s'étendre au débuggage de code.
 >
->Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisés dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
+> Les Tests de Composants sont des tests qui visent à vérifier le comportement d'une partie entière de l'application : classe ou module. Ces tests peuvent contenir différents Tests unitaires, car ils sont plus haut niveau. Ils sont généralement réalisés dans le cadre d'une modification de fonctionnalité sur l'applicatif pour éviter tout effet de bord et toutes régressions de l'application.
 
 ## 2-1 What are testcontainers ?
 
-`Testcontainers` est une librairie java utilisée pour réalisé des tests sur une application : notamment des JUnit Tests. Elle permet la création d'une base de données directement lancée depuis un container avec un script donné (`ressources/InsertData.sql`) ce qui permet de simulée parfaitement la communication avec un module de base de données.
+`Testcontainers` est une librairie java utilisée pour réaliser des tests sur une application : notamment des JUnit Tests. Elle permet la création d'une base de données directement lancée depuis un container avec un script donné (`ressources/InsertData.sql`) ce qui permet de simuler parfaitement la communication avec un module de base de données.
 
 [Documentation Testcontainers](https://www.testcontainers.org/)
 
@@ -221,10 +221,10 @@ jobs:
 ```
 
 > ### Note : Secured Variables, why ?
-> Pour ne pas perde ses identifiants et les avoir stockées à un seul endroit, ici Github, qui est sécurisé. De plus utiliser ces variables permettent le déploiement continu sans inclure des données sensibles (identifiant, mot de passe, token).
+> Pour ne pas perde ses identifiants et les avoir stockés à un seul endroit, ici Github, qui est sécurisé. De plus utiliser ces variables permettent le déploiement continu sans inclure des données sensibles (identifiant, mot de passe, token).
 
 > ### Note : Why did we put needs: build-and-test-backend on this job? Maybe try without this and you will see !
-> Sans ce job les tests unitaires décrit dans l'application ne s'executeront pas. Donc les pipelines perderaient de leurs sens car elles n'executeraient aucun tests.
+> Sans ce job les tests unitaires décrits dans l'application ne s'executeront pas. Donc les pipelines perderaient de leur sens car elles n'executeraient aucun test.
 
 > ### Note : For what purpose do we need to push docker images ?
 > Pour plusieurs raisons :
@@ -243,7 +243,7 @@ Notre sonar est configuré par défaut et il a des attentes très spécifiques s
 
 ![quality gate configuration](images/20230201104243.png)
 
-Bien sur cette configuration est celle présente par défaut et est donc contestable sur certains points, cela dépendra de notre applicatif et de ce que nous voulons réalisé avec (Autorisation des CORS ...)
+Bien sur cette configuration est celle présente par défaut et est donc contestable sur certains points, cela dépendra de notre applicatif et de ce que nous voulons réaliser avec (Autorisation des CORS ...)
 
 > ### Tips : You can use on: workflow_run to trigger a workflow when another workflow is passed.
 ```yaml
@@ -452,7 +452,7 @@ Pour unifier le document, nous préferons décrire des rôles pour chaque "couch
     - name: app-network
     ports:
       - 8081:8080
-  
+
 - name: Run API 2
   docker_container:
     name: api2
@@ -479,7 +479,7 @@ Pour unifier le document, nous préferons décrire des rôles pour chaque "couch
 
 ## Front
 
-Nous avons rajouter un service dans le `docker-compose.yml`
+Nous avons rajouté un service dans le `docker-compose.yml`
 
 ```yml
 version: '3.7'
@@ -510,7 +510,7 @@ services:
           - app-network
         depends_on:
           - api
-    
+
     front:
         build: /front/
         container_name: vue
@@ -526,8 +526,8 @@ networks:
       driver: bridge
 ```
 
-Le nouveau service est `front` il dépend du bon lancement du service `httpd` et son lancement se fait sur le port 80.
-Derière ce service nous avons une application Vue faisant des appels API vers le backend pour charger les données à afficher
+Le nouveau service est `front`, il dépend du bon lancement du service `httpd` et son lancement se fait sur le port 80.
+Derrière ce service nous avons une application Vue faisant des appels API vers le backend pour charger les données à afficher.
 
 >Voici quelques exemples du résultat obtenu
 ![](images/20230201171145.png)
@@ -604,7 +604,7 @@ services:
         depends_on:
           - backend-blue
           - backend-green
-    
+
     front:
         build: /front/
         container_name: vue
